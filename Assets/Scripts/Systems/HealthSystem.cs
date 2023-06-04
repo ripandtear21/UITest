@@ -6,25 +6,31 @@ namespace Systems
     {
         [SerializeField]private float maxHealth;
         [SerializeField]private float currentHealth;
-
-        public HealthSystem(float maxHealth)
+        
+        public void Initialize(float maxHealth)
         {
             this.maxHealth = maxHealth;
+            currentHealth = maxHealth;
+        }
+        public void IncreaseMaxHealth(float amount)
+        {
+            maxHealth += amount;
             currentHealth = maxHealth;
         }
 
         public void TakeDamage(float damageAmount)
         {
             currentHealth -= damageAmount;
+            if (gameObject.CompareTag("Player"))
+            {
+                EventSystem.HealthChanged(currentHealth, maxHealth);
+            }
             if (currentHealth <= 0)
             {
                 currentHealth = 0;
                 Die();
             }
-            else if (gameObject.CompareTag("Player"))
-            {
-                EventSystem.HealthChanged(currentHealth, maxHealth);
-            }
+            
             Debug.Log("Health reduced to: " + currentHealth);
         }
 

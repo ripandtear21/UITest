@@ -37,7 +37,7 @@ public class AttackScript : MonoBehaviour
 
         animator.SetTrigger("Attack");
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.5f);
 
         
         bool enemyInFront = CheckEnemyInFront();
