@@ -423,8 +423,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc6252c5309b18f44ba49e7101a77883, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 2
-  currentHealth: 2
+  maxHealth: 0
+  currentHealth: 0
 --- !u!114 &8476350385538745051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -437,6 +437,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ead8a497c6597d448b90b78f6c004f20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthSpherePrefab: {fileID: 4716726279949046032, guid: 74e794175bc9a7743a2228ab7add9328, type: 3}
   attackDamage: 1
   attackRange: 1.5
   attackCooldown: 1

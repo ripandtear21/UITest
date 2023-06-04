@@ -5,6 +5,7 @@ using Systems;
 
 public class EnemyScript : MonoBehaviour
 {
+    public GameObject healthSpherePrefab;
     public float attackDamage = 10f;
     public float attackRange = 1f;
     public float attackCooldown = 1f;
@@ -13,6 +14,7 @@ public class EnemyScript : MonoBehaviour
     private Animator animator;
     private bool canAttack = true;
     private static readonly int Attack = Animator.StringToHash("Attack");
+    
 
 
     private void Start()
@@ -27,6 +29,11 @@ public class EnemyScript : MonoBehaviour
         {
             StartCoroutine(AttackCoroutine());
         }
+    }
+
+    public void SpawnSphere()
+    {
+        Instantiate(healthSpherePrefab, transform.position, Quaternion.identity);
     }
 
     private bool IsPlayerInRange()
@@ -50,7 +57,7 @@ public class EnemyScript : MonoBehaviour
             HealthSystem healthSystem = hitCollider.GetComponent<HealthSystem>();
             if (healthSystem != null)
             {
-                healthSystem.TakeDamage(attackDamage);
+                healthSystem.TakeDamage(attackDamage, true);
             }
         }
 

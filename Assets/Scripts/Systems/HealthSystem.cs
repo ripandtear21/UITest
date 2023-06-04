@@ -18,29 +18,38 @@ namespace Systems
             currentHealth = maxHealth;
         }
 
-        public void TakeDamage(float damageAmount)
+        public void TakeDamage(float damageAmount, bool isPlayer)
         {
             currentHealth -= damageAmount;
-            if (gameObject.CompareTag("Player"))
-            {
-                EventSystem.HealthChanged(currentHealth, maxHealth);
-            }
+
             if (currentHealth <= 0)
             {
                 currentHealth = 0;
                 Die();
+
+                if (isPlayer)
+                {
+                    EventSystem.PlayerDeath();
+                }
             }
-            
+
+            if (isPlayer)
+            {
+                EventSystem.HealthChanged(currentHealth, maxHealth);
+            }
+
             Debug.Log("Health reduced to: " + currentHealth);
         }
 
         public void Heal(float healAmount)
         {
+            
             currentHealth += healAmount;
             if (currentHealth > maxHealth)
             {
                 currentHealth = maxHealth;
             }
+            EventSystem.HealthChanged(currentHealth, maxHealth);
             Debug.Log("Health increased to: " + currentHealth);
         }
         
@@ -51,6 +60,7 @@ namespace Systems
             if (gameObject.CompareTag("Enemy"))
             {
                 EventSystem.AddScore();
+                gameObject.GetComponent<EnemyScript>().SpawnSphere();
             }
         }
         public float GetHealthPercentage()

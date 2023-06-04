@@ -17,5 +17,17 @@ namespace Systems
         {
             OnKill?.Invoke();
         }
+        public static Action OnPlayerDeath;
+        
+        public static void PlayerDeath()
+        {
+            OnPlayerDeath?.Invoke();
+        }
+        public static Action OnEnemyDeath;
+        
+        public static void EnemyDeath()
+        {
+            OnEnemyDeath?.Invoke();
+        }
     }
 }

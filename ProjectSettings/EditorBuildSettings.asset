@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 2395731f58474d245a96e90ac73626e9
+  - enabled: 1
+    path: Assets/Scenes/VikingGameScene.unity
+    guid: 8299f45c6a8ce6d439b560227fc8bf84
   m_configObjects: {}

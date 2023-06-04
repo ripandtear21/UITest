@@ -1,82 +1,83 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using Systems;
 using UnityEngine;
 
-public class AttackScript : MonoBehaviour
+namespace Character
 {
-    public float attackDamage = 10f;
-    public float attackRange = 2f;
-    public float attackCooldown = 1f; 
-    private Animator animator;
-    private bool canAttack = true;
-    private HealthSystem healthSystem;
-
-    private void Start()
+    public class AttackScript : MonoBehaviour
     {
-        animator = GetComponent<Animator>();
-        healthSystem = GetComponent<HealthSystem>();
-    }
+        public float attackDamage = 10f;
+        public float attackRange = 2f;
+        public float attackCooldown = 1f; 
+        private Animator animator;
+        private bool canAttack = true;
+        private HealthSystem healthSystem;
 
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0) && canAttack)
+        private void Start()
         {
-            StartCoroutine(AttackCoroutine());
+            animator = GetComponent<Animator>();
+            healthSystem = GetComponent<HealthSystem>();
         }
-        if(Input.GetKeyDown(KeyCode.Space))
+
+        private void Update()
         {
-            healthSystem.TakeDamage(5);
+            if (Input.GetMouseButtonDown(0) && canAttack)
+            {
+                StartCoroutine(AttackCoroutine());
+            }
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+                healthSystem.TakeDamage(5, true);
+            }
         }
-    }
 
-    private IEnumerator AttackCoroutine()
-    {
-        canAttack = false;
+        private IEnumerator AttackCoroutine()
+        {
+            canAttack = false;
 
-        animator.SetTrigger("Attack");
+            animator.SetTrigger("Attack");
 
-        yield return new WaitForSeconds(1.5f);
+            // return new WaitForSeconds(1.5f);
 
         
-        bool enemyInFront = CheckEnemyInFront();
+            bool enemyInFront = CheckEnemyInFront();
 
-        if (enemyInFront)
-        {
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange);
-            foreach (Collider hitCollider in hitColliders)
+            if (enemyInFront)
             {
-                if (hitCollider.CompareTag("Enemy"))
+                Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange);
+                foreach (Collider hitCollider in hitColliders)
                 {
-                    HealthSystem enemyHealth = hitCollider.GetComponent<HealthSystem>();
-                    if (enemyHealth != null)
+                    if (hitCollider.CompareTag("Enemy"))
                     {
-                        enemyHealth.TakeDamage(attackDamage);
+                        HealthSystem enemyHealth = hitCollider.GetComponent<HealthSystem>();
+                        if (enemyHealth != null)
+                        {
+                            enemyHealth.TakeDamage(attackDamage, false);
+                        }
                     }
                 }
             }
+
+            yield return new WaitForSeconds(attackCooldown);
+
+            canAttack = true;
         }
 
-        yield return new WaitForSeconds(attackCooldown);
-
-        canAttack = true;
-    }
-
-    private bool CheckEnemyInFront()
-    {
-        Vector3 direction = transform.forward;
-        Ray ray = new Ray(transform.position, direction);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit, attackRange))
+        private bool CheckEnemyInFront()
         {
-            if (hit.collider.CompareTag("Enemy"))
-            {
-                return true;
-            }
-        }
+            Vector3 direction = transform.forward;
+            Ray ray = new Ray(transform.position, direction);
+            RaycastHit hit;
 
-        return false;
+            if (Physics.Raycast(ray, out hit, attackRange))
+            {
+                if (hit.collider.CompareTag("Enemy"))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

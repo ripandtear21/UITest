@@ -10,7 +10,9 @@ public class CharacterUI : MonoBehaviour
 {
     [SerializeField] private Image healthBar;
     [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI finalScoreText;
     [SerializeField] private int score = 0;
+    [SerializeField] private GameObject deathScreen;
 
     private void Start()
     {
@@ -19,12 +21,14 @@ public class CharacterUI : MonoBehaviour
 
     private void OnEnable()
     {
+        EventSystem.OnPlayerDeath += ShowDeathScreen;
         EventSystem.OnKill += AddScore;
         EventSystem.OnHealthChanged += UpdateHealthUI;
     }
 
     private void OnDisable()
     {
+        EventSystem.OnPlayerDeath -= ShowDeathScreen;
         EventSystem.OnKill -= AddScore;
         EventSystem.OnHealthChanged -= UpdateHealthUI;
     }
@@ -41,4 +45,20 @@ public class CharacterUI : MonoBehaviour
         score++;
         scoreText.text = score.ToString();
     }
+    
+
+    private void ShowDeathScreen()
+    {
+        finalScoreText.text = "Score: " + score.ToString();
+        deathScreen.SetActive(true);
+    }
+    public void RestartGame()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+    }
+    public void QuitGame()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+    }
+    
 }
